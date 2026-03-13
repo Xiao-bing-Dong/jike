@@ -3,6 +3,7 @@ import { Card, Form, Input, Button } from 'antd';
 import logo from '@/assets/logo.png';
 
 const Login = () => {
+    //获取input的输入内容
     const onFinish = (values)=>{
         console.log(values); 
     }

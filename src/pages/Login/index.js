@@ -1,11 +1,16 @@
 import './index.scss';
 import { Card, Form, Input, Button } from 'antd';
 import logo from '@/assets/logo.png';
+import { useDispatch } from 'react-redux';
+import { fetchLogin } from '@/store/modules/user';
 
 const Login = () => {
+    const dispatch = useDispatch();
     //获取input的输入内容
     const onFinish = (values)=>{
-        console.log(values); 
+        console.log(values);
+        //触发异步action fetchLogin
+        dispatch(fetchLogin(values));
     }
 
     return <div className='login'>

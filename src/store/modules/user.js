@@ -4,11 +4,14 @@ import { createSlice } from "@reduxjs/toolkit";
 const userStore = createSlice({
     name: "user",
     initialState: {
-        token: ''
+        token: localStorage.getItem('token_key') || ''
     },
     reducers: {
         setToken:(state, action) =>{
+            //将token存储在Redux中
             state.token = action.payload;
+            //将token存储在本地
+            localStorage.setItem('token_key',action.payload);
         }
     }
 })

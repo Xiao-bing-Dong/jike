@@ -7,7 +7,7 @@ const setToken = (token) => {
 }
 
 const getToken = () => {
-    const token = localStorage.getItem(TOKENKEY);
+    return localStorage.getItem(TOKENKEY);
 }
 
 const removeToken = () => {

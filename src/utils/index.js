@@ -1,4 +1,10 @@
 //统一的中转工具模块
 import { request } from "./request";
+import { setToken, getToken, removeToken } from "./token";
 
-export {request};
+export {
+    request,
+    setToken,
+    getToken,
+    removeToken,
+};

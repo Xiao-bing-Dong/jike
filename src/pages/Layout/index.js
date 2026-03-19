@@ -40,13 +40,20 @@ const GreekLayout = () => {
     }
     //实现菜单高亮
     const location = useLocation();
+    //触发个人用户信息action
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(fetchUserInfo());
+    }, [dispatch])
+    //从Redux获取个人用户信息
+    const userInfo = useSelector(state => state.user.userInfo);
 
     return (
         <Layout>
             <Header className='header'>
                 <div className='logo' />
                 <div className='user-info'>
-                    <span className='user-name'>柴柴老师</span>
+                    <span className='user-name'>{userInfo.name}</span>
                     <span className='user-logout'>
                         <Popconfirm title='是否确认退出' okText='退出' cancelText='取消'>
                             <LogoutOutlined />退出

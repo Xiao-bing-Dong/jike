@@ -5,7 +5,8 @@ import { setToken as _setToken, getToken } from '@/utils';
 const userStore = createSlice({
     name: "user",
     initialState: {
-        token: getToken() || ''
+        token: getToken() || '',
+        userInfo:{}
     },
     reducers: {
         setToken:(state, action) =>{
@@ -13,17 +14,20 @@ const userStore = createSlice({
             state.token = action.payload;
             //将token存储在本地
             _setToken(action.payload);
+        },
+        setUserInfo:(state,action)=>{
+            state.userInfo=action.payload;
         }
     }
 })
 
 //结构出actionCreater
-const { setToken } = userStore.actions;
+const { setToken,setUserInfo } = userStore.actions;
 
 //获取reducer对象
 const userReducer = userStore.reducer;
 
-//异步方法，完成登陆获取token
+//获取token异步方法
 const fetchLogin = (loginForm) => {
     return async (dispatch) => {
         //发送异步请求
@@ -33,6 +37,15 @@ const fetchLogin = (loginForm) => {
     }
 }
 
-export { setToken, fetchLogin };
+
+//获取个人用户信息异步方法
+const fetchUserInfo = () => {
+    return async (dispatch) => {
+        const res = await request.get('/user/profile');
+        dispatch(setUserInfo(res.data)); 
+    }
+}
+
+export { setToken, fetchLogin,fetchUserInfo };
 
 export default userReducer;

@@ -1,4 +1,4 @@
-import {Layout,Menu,Popconfirm} from 'antd';
+import { Layout, Menu, Popconfirm } from 'antd';
 import {
     HomeOutlined,
     DiffOutlined,
@@ -6,36 +6,41 @@ import {
     LogoutOutlined,
 } from '@ant-design/icons';
 import './index.scss';
-import {Outlet,useLocation,useNavigate} from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import {useDispatch,useSelector} from 'react-redux';
-import {fetchUserInfo,clearUserInfo} from "@/store/modules/user";
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUserInfo, clearUserInfo } from "@/store/modules/user";
 
-const {Header,Sider} = Layout;
+const { Header, Sider } = Layout;
 
 const items = [
     {
-        label:'首页',
-        key:'1',
-        icon:<HomeOutlined />,
+        label: '首页',
+        key: '/',
+        icon: <HomeOutlined />,
     },
     {
-        label:'文件管理',
-        key:'2',
-        icon:<DiffOutlined />,
+        label: '文件管理',
+        key: '/artical',
+        icon: <DiffOutlined />,
     },
     {
-        label:'创建文章',
-        key:'3',
-        icon:<EditOutlined />,
+        label: '创建文章',
+        key: '/publish',
+        icon: <EditOutlined />,
     },
 ]
 
-const GreekLayout = ()=>{
-    return(
+const GreekLayout = () => {
+    const navigate = useNavigate();
+    const onMenuClick = (route) => {
+        const path = route.key;
+        navigate(path);
+    }
+    return (
         <Layout>
             <Header className='header'>
-                <div className='logo'/>
+                <div className='logo' />
                 <div className='user-info'>
                     <span className='user-name'>柴柴老师</span>
                     <span className='user-logout'>
@@ -51,14 +56,15 @@ const GreekLayout = ()=>{
                         mode='inline'
                         theme='dark'
                         defaultSelectedKey={['1']}
+                        onClick={onMenuClick}
                         items={items}
                         style={{
-                            height:'100%',
-                            borderRight:0
+                            height: '100%',
+                            borderRight: 0
                         }}
                     ></Menu>
                 </Sider>
-                <Layout className='layout-content' style={{padding:20}}>
+                <Layout className='layout-content' style={{ padding: 20 }}>
                     <Outlet />
                 </Layout>
             </Layout>

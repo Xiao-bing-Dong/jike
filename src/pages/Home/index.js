@@ -51,7 +51,7 @@ const Home = () => {
                     type: 'bar'
                 }
             ]
-        };
+        }; 
 
         //4.使用图表参数完成图表渲染
         option1 && myChart1.setOption(option1);

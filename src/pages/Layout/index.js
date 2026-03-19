@@ -47,6 +47,11 @@ const GreekLayout = () => {
     }, [dispatch])
     //从Redux获取个人用户信息
     const userInfo = useSelector(state => state.user.userInfo);
+    //退出登录确认
+    const onConfirm = ()=>{
+        dispatch(clearUserInfo());
+        navigate('/login');
+    }
 
     return (
         <Layout>
@@ -55,7 +60,7 @@ const GreekLayout = () => {
                 <div className='user-info'>
                     <span className='user-name'>{userInfo.name}</span>
                     <span className='user-logout'>
-                        <Popconfirm title='是否确认退出' okText='退出' cancelText='取消'>
+                        <Popconfirm title='是否确认退出' okText='退出' cancelText='取消' onConfirm={onConfirm}>
                             <LogoutOutlined />退出
                         </Popconfirm>
                     </span>

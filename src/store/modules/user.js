@@ -1,6 +1,5 @@
-import { request } from "@/utils";
 import { createSlice } from "@reduxjs/toolkit";
-import { setToken as _setToken, getToken } from '@/utils';
+import { setToken as _setToken, getToken,removeToken, request } from '@/utils';
 
 const userStore = createSlice({
     name: "user",
@@ -9,20 +8,28 @@ const userStore = createSlice({
         userInfo:{}
     },
     reducers: {
+        //获取token
         setToken:(state, action) =>{
             //将token存储在Redux中
             state.token = action.payload;
             //将token存储在本地
             _setToken(action.payload);
         },
+        //获取个人信息
         setUserInfo:(state,action)=>{
             state.userInfo=action.payload;
+        },
+        //清除个人信息与token
+        clearUserInfo:(state)=>{
+            state.token = '';
+            state.userInfo = {};
+            removeToken();
         }
     }
 })
 
 //结构出actionCreater
-const { setToken,setUserInfo } = userStore.actions;
+const { setToken,setUserInfo,clearUserInfo } = userStore.actions;
 
 //获取reducer对象
 const userReducer = userStore.reducer;
@@ -37,7 +44,6 @@ const fetchLogin = (loginForm) => {
     }
 }
 
-
 //获取个人用户信息异步方法
 const fetchUserInfo = () => {
     return async (dispatch) => {
@@ -46,6 +52,6 @@ const fetchUserInfo = () => {
     }
 }
 
-export { setToken, fetchLogin,fetchUserInfo };
+export { setToken,fetchLogin,fetchUserInfo,clearUserInfo};
 
 export default userReducer;

@@ -32,11 +32,15 @@ const items = [
 ]
 
 const GreekLayout = () => {
+    //实现路由跳转
     const navigate = useNavigate();
     const onMenuClick = (route) => {
         const path = route.key;
         navigate(path);
     }
+    //实现菜单高亮
+    const location = useLocation();
+
     return (
         <Layout>
             <Header className='header'>
@@ -55,7 +59,7 @@ const GreekLayout = () => {
                     <Menu
                         mode='inline'
                         theme='dark'
-                        defaultSelectedKey={['1']}
+                        selectedKeys={location.pathname}
                         onClick={onMenuClick}
                         items={items}
                         style={{

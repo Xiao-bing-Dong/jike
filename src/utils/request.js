@@ -36,7 +36,7 @@ request.interceptors.response.use((response)=>{
     //超出2xx范围的状态码都会触发该函数
     //对响应数据作出处理
     //监控401状态码，即token失效
-    if(error.response.status == 401){
+    if(error.response.status === 401){
         removeToken();
         router.navigate('/login');
         window.location.reload();

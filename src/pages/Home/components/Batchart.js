@@ -23,21 +23,21 @@ const BarChart = (props) => {
             },
             xAxis: {
                 type: 'category',
-                data: ['Vue', 'Angular', 'React']
+                data: props.xData
             },
             yAxis: {
                 type: 'value'
             },
             series: [
                 {
-                    data: [10, 40, 70],
+                    data: props.value? props.value:[10, 40, 70],
                     type: 'bar'
                 }
             ]
         };
         //4.使用图表参数完成图表渲染
         option && myChart.setOption(option);
-    }, [props.title])
+    }, [props])
 
     {/* 这里必须设定宽高，因为图表需要一个有宽高的dom节点 */ }
     return <div ref={chartRef} style={{ width: '500px', height: '400px' }}></div>

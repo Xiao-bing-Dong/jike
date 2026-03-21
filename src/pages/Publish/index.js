@@ -8,7 +8,8 @@ import {
     Input,
     Upload,
     Space,
-    Select
+    Select,
+    message
 } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
@@ -35,6 +36,8 @@ const Publish = () => {
 
     //提交表单
     const onFinish = (formValue) => {
+        //校验封面类型imageType是否和十几的图片列表imageList数量是相等的
+        if(imageList.length!==imageType)return message.warning('封面类型与实际图片数量不符')
         //1.按照接口文档的格式处理收集到的表单数据
         const { title, content, channel_id } = formValue;
         const reqData = {
@@ -42,8 +45,8 @@ const Publish = () => {
             title,
             content,
             cover: {
-                type: 0,
-                images: []
+                type: imageType,
+                images: imageList.map(item => item.response.data.url)
             },
             channel_id
         }
@@ -108,6 +111,7 @@ const Publish = () => {
                                 <Radio value={0}>无图</Radio>
                             </Radio.Group>
                         </Form.Item>
+                        {/* 目前为止，这里还有一个bug，就是在三图模式下上传三张图片之后，切换到单图模式之后，依然显示三张图片 */}
                         {
                             imageType > 0 && <Upload
                                 /* 

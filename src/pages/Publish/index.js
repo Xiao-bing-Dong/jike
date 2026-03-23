@@ -17,7 +17,7 @@ import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 import './index.scss';
 import { useEffect, useState } from 'react';
-import { getChannelAPI, createArticleAPI } from '@/apis/artical';
+import { getChannelAPI, createArticleAPI } from '@/apis/article';
 import { useChannel } from '@/hooks/useChannel';
 
 const { Option } = Select;

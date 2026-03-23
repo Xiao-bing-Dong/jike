@@ -1,6 +1,6 @@
 //封装获取频道列表的逻辑
 import {useState,useEffect} from 'react';
-import {getChannelAPI} from '@/apis/artical';
+import {getChannelAPI} from '@/apis/article';
 
 const useChannel=()=>{
     //1.获取频道列表中所有的逻辑
@@ -16,7 +16,7 @@ const useChannel=()=>{
         }, [])
     //2.把组件中要用到的数据return
     return {
-        channelList,
+        channelList
     }
 }
 export {useChannel};

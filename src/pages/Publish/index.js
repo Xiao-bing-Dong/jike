@@ -18,22 +18,13 @@ import 'react-quill-new/dist/quill.snow.css';
 import './index.scss';
 import { useEffect, useState } from 'react';
 import { getChannelAPI, createArticleAPI } from '@/apis/artical';
+import { useChannel } from '@/hooks/useChannel';
 
 const { Option } = Select;
 
 const Publish = () => {
     //获取频道列表
-    const [channelList, setChannelList] = useState([]);
-    useEffect(() => {
-        //1，封装函数，在函数体中调用接口
-        const getChannelList = async () => {
-            const res = await getChannelAPI();
-            setChannelList(res.data.channels);
-        }
-        //2.调用函数
-        getChannelList();
-    }, [])
-
+    const {channelList} = useChannel();
     //提交表单
     const onFinish = (formValue) => {
         //校验封面类型imageType是否和十几的图片列表imageList数量是相等的

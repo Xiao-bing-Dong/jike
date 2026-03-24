@@ -14,6 +14,11 @@ const { Option } = Select;
 const { RangePicker } = DatePicker;
 
 const Artical = () => {
+    //定义枚举状态
+    const status = {
+        1:<Tag color="warning">待审核</Tag>,
+        2:<Tag color="success">审核通过</Tag>,
+    }
     //准备表格列数据
     const columns = [
         {
@@ -32,7 +37,7 @@ const Artical = () => {
         {
             title: '状态',
             dataIndex: 'status',
-            render: data => <Tag color="green">审核通过</Tag>
+            render: data => status[data]
         },
         {
             title: '发布时间',
@@ -86,7 +91,7 @@ const Artical = () => {
     const { channelList } = useChannel();
     //获取文章列表
     const [list, setList] = useState([]);
-    const [count,setCount] = useState(0)
+    const [count, setCount] = useState(0)
     useEffect(() => {
         const getList = async () => {
             const res = await getArticalListAPI();

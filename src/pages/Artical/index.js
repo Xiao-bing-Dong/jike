@@ -89,17 +89,36 @@ const Artical = () => {
     ];
     //获取频道列表
     const { channelList } = useChannel();
+    //准备筛选的请求参数对象
+    const [reqData,setReqData] = useState({
+        status:'',
+        channel_id:'',
+        begin_pubdate:'',
+        end_pubdate:'',
+        page:'',
+        per_page:'',
+    });
     //获取文章列表
     const [list, setList] = useState([]);
     const [count, setCount] = useState(0)
     useEffect(() => {
         const getList = async () => {
-            const res = await getArticalListAPI();
+            const res = await getArticalListAPI(reqData);
             setList(res.data.results);
             setCount(res.data.total_count);
         }
         getList();
-    }, [])
+    }, [reqData])
+    //获取用户选择的表单数据
+    const onFinish = (formValue)=>{
+        setReqData({
+            ...reqData,
+            status:formValue.status,
+            begin_pubdate:formValue.date[0].format('YYYY-MM-DD'),
+            end_pubdate:formValue.date[1].format('YYYY-MM-DD'),
+            channel_id:formValue.channel_id,
+        })
+    }
     return (
         <div>
             <Card
@@ -112,7 +131,7 @@ const Artical = () => {
                 }
                 style={{ marginBottom: 20 }}
             >
-                <Form initialValues={{ status: null }}>
+                <Form initialValues={{ status: null }} onFinish={onFinish} >
                     <Form.Item label='状态' name='statue'>
                         <Radio.Group>
                             <Radio value={null}>全部</Radio>

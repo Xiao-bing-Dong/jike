@@ -95,8 +95,8 @@ const Artical = () => {
         channel_id:'',
         begin_pubdate:'',
         end_pubdate:'',
-        page:'',
-        per_page:'',
+        page:1,
+        per_page:4,
     });
     //获取文章列表
     const [list, setList] = useState([]);
@@ -111,12 +111,20 @@ const Artical = () => {
     }, [reqData])
     //获取用户选择的表单数据
     const onFinish = (formValue)=>{
+        console.log(formValue);
         setReqData({
             ...reqData,
+            channel_id:formValue.channel_id,
             status:formValue.status,
             begin_pubdate:formValue.date[0].format('YYYY-MM-DD'),
             end_pubdate:formValue.date[1].format('YYYY-MM-DD'),
-            channel_id:formValue.channel_id,
+        })
+    }
+    //分页
+    const onPageChange = (page)=>{
+        setReqData({
+            ...reqData,
+            page
         })
     }
     return (
@@ -131,11 +139,11 @@ const Artical = () => {
                 }
                 style={{ marginBottom: 20 }}
             >
-                <Form initialValues={{ status: null }} onFinish={onFinish} >
-                    <Form.Item label='状态' name='statue'>
+                <Form initialValues={{ status: '' }} onFinish={onFinish} >
+                    <Form.Item label='状态' name='status'>
                         <Radio.Group>
-                            <Radio value={null}>全部</Radio>
-                            <Radio value={0}>草稿</Radio>
+                            <Radio value={''}>全部</Radio>
+                            <Radio value={0}>待审核</Radio>
                             <Radio value={2}>审核通过</Radio>
                         </Radio.Group>
                     </Form.Item>
@@ -144,7 +152,7 @@ const Artical = () => {
                             placeholder='请选择文章频道'
                             style={{ width: 286 }}
                         >
-                            {
+                            { 
                                 channelList.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>)
                             }
                         </Select>
@@ -162,7 +170,11 @@ const Artical = () => {
             </Card>
             {/* 表格区域 */}
             <Card title={`根据筛选条件共查询到 ${count} 条结果：`}>
-                <Table rowKey='id' columns={columns} dataSource={list} />
+                <Table rowKey='id' columns={columns} dataSource={list} pagination={{
+                    total:count,
+                    pageSize:reqData.per_page,
+                    onChange:onPageChange,
+                }} />
             </Card>
         </div>
     )

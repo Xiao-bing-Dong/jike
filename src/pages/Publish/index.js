@@ -12,12 +12,12 @@ import {
     message
 } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 import './index.scss';
 import { useEffect, useState } from 'react';
-import { getChannelAPI, createArticleAPI } from '@/apis/article';
+import { getArticleById, createArticleAPI } from '@/apis/article';
 import { useChannel } from '@/hooks/useChannel';
 
 const { Option } = Select;
@@ -58,6 +58,21 @@ const Publish = () => {
         setImageType(e.target.value);
     }
 
+    //回填数据
+    const [searchParams] = useSearchParams();
+    const articleId = searchParams.get('id');
+    //获取实例
+    const [form] = Form.useForm();
+    useEffect(()=>{
+        //1.通过id获取数据
+        const getArticleDetail = async ()=>{
+            const res = await getArticleById(articleId); 
+            form.setFieldsValue(res.data);
+        }
+        getArticleDetail();
+        //2.调用实例方法完成回填
+    },[articleId,form])
+
     return (
         <div className='publish'>
             <Card
@@ -76,6 +91,7 @@ const Publish = () => {
                     initialValues={{ type: 0 }}
                     //当表单所有数据通过验证之后，点击提交按钮，会自动触发onFinish
                     onFinish={onFinish}
+                    form = {form}
                 >
                     <Form.Item
                         label='标题'

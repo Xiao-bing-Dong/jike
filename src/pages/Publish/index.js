@@ -19,16 +19,17 @@ import './index.scss';
 import { useEffect, useState } from 'react';
 import { getArticleById, createArticleAPI } from '@/apis/article';
 import { useChannel } from '@/hooks/useChannel';
+import { type } from '@testing-library/user-event/dist/type';
 
 const { Option } = Select;
 
 const Publish = () => {
     //获取频道列表
-    const {channelList} = useChannel();
+    const { channelList } = useChannel();
     //提交表单
     const onFinish = (formValue) => {
         //校验封面类型imageType是否和十几的图片列表imageList数量是相等的
-        if(imageList.length!==imageType)return message.warning('封面类型与实际图片数量不符')
+        if (imageList.length !== imageType) return message.warning('封面类型与实际图片数量不符')
         //1.按照接口文档的格式处理收集到的表单数据
         const { title, content, channel_id } = formValue;
         const reqData = {
@@ -63,15 +64,27 @@ const Publish = () => {
     const articleId = searchParams.get('id');
     //获取实例
     const [form] = Form.useForm();
-    useEffect(()=>{
+    useEffect(() => {
         //1.通过id获取数据
-        const getArticleDetail = async ()=>{
-            const res = await getArticleById(articleId); 
-            form.setFieldsValue(res.data);
+        const getArticleDetail = async () => {
+            const res = await getArticleById(articleId);
+            const data = res.data;
+            const cover = data.cover;
+            form.setFieldsValue(
+                {
+                    ...data,
+                    type: cover.type
+                }
+            );
+            setImageType(cover.type);
+            setImageList(cover.images.map(url=>{
+                return {url};
+            }));
+
         }
         getArticleDetail();
         //2.调用实例方法完成回填
-    },[articleId,form])
+    }, [articleId, form])
 
     return (
         <div className='publish'>
@@ -91,7 +104,7 @@ const Publish = () => {
                     initialValues={{ type: 0 }}
                     //当表单所有数据通过验证之后，点击提交按钮，会自动触发onFinish
                     onFinish={onFinish}
-                    form = {form}
+                    form={form}
                 >
                     <Form.Item
                         label='标题'
@@ -133,6 +146,7 @@ const Publish = () => {
                                 name='image'
                                 onChange={onChange}
                                 maxCount={imageType}
+                                fileList={imageList}
                             >
                                 <div style={{ marginTop: 8 }}>
                                     <PlusOutlined />

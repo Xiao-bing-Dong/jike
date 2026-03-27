@@ -17,7 +17,7 @@ import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 import './index.scss';
 import { useEffect, useState } from 'react';
-import { getArticleById, createArticleAPI } from '@/apis/article';
+import { getArticleById, createArticleAPI, updateArticleAPI } from '@/apis/article';
 import { useChannel } from '@/hooks/useChannel';
 import { type } from '@testing-library/user-event/dist/type';
 
@@ -38,12 +38,25 @@ const Publish = () => {
             content,
             cover: {
                 type: imageType,
-                images: imageList.map(item => item.response.data.url)
+                //对回传数据、新增数据做不同的吹
+                images: imageList.map(item => {
+                    if (item.response) {
+                        return item.response.data.url;
+                    } else {
+                        return item.url;
+                    }
+                })
             },
             channel_id
         }
         //2.调用接口提交
-        createArticleAPI(reqData);
+        if (articleId) {
+            //调用编辑文章的接口
+            updateArticleAPI({...reqData,id:articleId});
+        } else {
+            //调用新增文章的接口
+            createArticleAPI(reqData);
+        }
     }
 
     //封面上传回调
@@ -77,12 +90,12 @@ const Publish = () => {
                 }
             );
             setImageType(cover.type);
-            setImageList(cover.images.map(url=>{
-                return {url};
+            setImageList(cover.images.map(url => {
+                return { url };
             }));
 
         }
-        articleId&&getArticleDetail();
+        articleId && getArticleDetail();
         //2.调用实例方法完成回填
     }, [articleId, form])
 
@@ -93,7 +106,7 @@ const Publish = () => {
                     <Breadcrumb
                         items={[
                             { title: <Link to='/'>首页</Link> },
-                            { title: `${articleId?'编辑':'发布'}文章` },
+                            { title: `${articleId ? '编辑' : '发布'}文章` },
                         ]}
                     />
                 }

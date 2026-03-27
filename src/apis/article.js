@@ -16,8 +16,16 @@ export const createArticleAPI = (data) => {
         data
     })
 }
+//更新文章
+export const updateArticleAPI = (data) => {
+    return request({
+        url: `/mp/articles/${data.id}?draft=false`,
+        method: 'PUT',
+        data
+    })
+}
 //获取文章列表
-export const getArticalListAPI = (params) => {
+export const getArticleListAPI = (params) => {
     return request({
         url:'/mp/articles',
         method:'GET',

@@ -8,7 +8,7 @@ import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import img404 from '@/assets/error.png';
 import { useChannel } from '@/hooks/useChannel';
 import { useEffect, useState } from 'react';
-import { delArticleAPI, getArticalListAPI } from '@/apis/article';
+import { delArticleAPI, getArticleListAPI } from '@/apis/article';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -118,7 +118,7 @@ const Artical = () => {
     const [count, setCount] = useState(0)
     useEffect(() => {
         const getList = async () => {
-            const res = await getArticalListAPI(reqData);
+            const res = await getArticleListAPI(reqData);
             setList(res.data.results);
             setCount(res.data.total_count);
         }
